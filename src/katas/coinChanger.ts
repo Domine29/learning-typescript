@@ -1,18 +1,30 @@
-export function coinChanger(amount: number, cost: number): {[key:number]: number} {
-  const denominations: number[] = [100,50,20,10,5,1,0.25,0.10,0.05,0.01]
-  let change: number = amount - cost
-  const payout: {[key: number]: number} = {}
+export function coinChanger(amount: number) {
+  let payout: { [key: string]: number } = {};
+  
+  const denominations: { [key: string]: number } = {
+    $100 : 10000,
+    $50: 5000,
+    $20: 2000,
+    $10: 1000,
+    $5: 500,
+    $1: 100,
+    quarter: 25,
+    dime: 10,
+    nickel: 5,
+    penny: 1,
+  };
 
-  for(let i in denominations){
-    if(change >= denominations[i]){
-      const multiplier: number = (Math.floor(change / denominations[i]))
-      payout[denominations[i]] = multiplier
-      change = Math.round((change % denominations[i]) * 100) / 100;
+  for (let d in denominations) {
+    if (amount >= denominations[d]) {
+      let multiplier: number = Math.floor(amount / denominations[d]);
+      payout[d] = multiplier;
+      amount = amount % denominations[d];
 
-      if(change == 0){
-        return payout
+      if (amount == 0) {
+        return payout;
       }
     }
   }
-  return payout
 }
+
+coinChanger(10000)
